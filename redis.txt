@@ -1,0 +1,145 @@
+-- redis container ayağı kaldırılması
+docker run -d --name redis-container -p 6379:6379 redis
+docker stop redis-container
+docker rm redis-container
+
+docker exec -it redis-container redis-cli
+
+--redis-cli üzerinden string değişken kaydetme/alma
+
+127.0.0.1:6379> set name Murat
+OK
+127.0.0.1:6379> set isim mgm
+OK
+127.0.0.1:6379> get name
+"Murat"
+127.0.0.1:6379> get isim
+"mgm"
+
+-- getrange name key'ini 0 - 2 index aralığında okur
+127.0.0.1:6379> getrange name 0 2
+"Mur"
+
+-- incr +1 artıyor değişkeni
+
+127.0.0.1:6379> get visitor
+"1000"
+127.0.0.1:6379> incr visitor
+(integer) 1001
+127.0.0.1:6379> get visitor
+"1001"
+127.0.0.1:6379> incr visitor
+(integer) 1002
+127.0.0.1:6379> get visitor
+"1002"
+127.0.0.1:6379>
+
+-- incrby verilen değer kadar değişkeni arttırıyor
+127.0.0.1:6379> incrby visitor 10
+(integer) 1012
+
+-- decr ve decrby komutları
+127.0.0.1:6379> decr visitor
+(integer) 1011
+127.0.0.1:6379> decrby visitor 5
+(integer) 1006
+
+-- name değişkenine ek yapıyor
+127.0.0.1:6379> append name gümüş
+
+-- lpush dizinin başına ekliyor.(soluna)
+127.0.0.1:6379> lpush kitaplar kitap1
+(integer) 1
+127.0.0.1:6379> lpush kitaplar kitap2
+(integer) 2
+127.0.0.1:6379> lpush kitaplar kitap3
+
+-- rpush dizinin sonuna ekliyor (sağına)
+127.0.0.1:6379> rpush kitaplar kitap4
+(integer) 4
+
+-- lrange dizideki verilen index'teki değerleri getiriyor.
+127.0.0.1:6379> lrange kitaplar 0 2
+1) "kitap3"
+2) "kitap2"
+3) "kitap1"
+
+-- lpop dizinin başındaki elemanı siler
+127.0.0.1:6379> lpop kitaplar
+"kitap3"
+
+-- rpop dizinin sonundaki elemanı siler
+127.0.0.1:6379> rpop kitaplar
+"kitap4"
+
+-- lindex kitaplar dizisinin 1.indexinde bulunan elamanı verir.
+127.0.0.1:6379> lindex kitaplar 1
+"kitap1"
+
+-- sadd & smembers komutları- sadd diziye elaman ekler, smembers listedeki elemanları döner
+127.0.0.1:6379> sadd color blue
+(integer) 1
+127.0.0.1:6379> sadd color red
+(integer) 1
+127.0.0.1:6379> sadd color black
+(integer) 1
+127.0.0.1:6379> smembers color
+1) "blue"
+2) "red"
+3) "black"
+
+-- srem listedeki elamanı siler
+127.0.0.1:6379> srem color black
+(integer) 1
+127.0.0.1:6379> smembers color
+1) "blue"
+2) "red"
+
+-- zadd verilen sıraya göre ekliyor.
+127.0.0.1:6379> zadd kalemler 1 kalem1
+(integer) 1
+127.0.0.1:6379> zadd kalemler 2 kalem2
+(integer) 1
+127.0.0.1:6379> zadd kalemler 0 kalem0
+(integer) 1
+
+-- zrange  sıralı listeyi gösterir.
+127.0.0.1:6379> zrange kalemler 0 -1
+1) "kalem0"
+2) "kalem1"
+3) "kalem2"
+
+-- withscores skorlar ile beraber
+127.0.0.1:6379> zrange kalemler 0 -1 withscores
+1) "kalem0"
+2) "0"
+3) "kalem1"
+4) "1"
+5) "kalem2"
+6) "2"
+127.0.0.1:6379>
+
+-- zrem verilen ele siler
+127.0.0.1:6379> zrem kalemler kalem1
+(integer) 1
+127.0.0.1:6379> zrange kalemler 0 -1
+1) "kalem0"
+2) "kalem2"
+
+-- hmset sozluk listesi olarak kayıt yapıyor
+127.0.0.1:6379> hmset sozluk pen kalem
+OK
+127.0.0.1:6379> hmset sozluk bag canta
+
+-- hget sözlükten karşılığı verilen elamanı getirir. 
+127.0.0.1:6379> hget sozluk pen
+"kalem"
+
+-- hdel sozlukten pen'i kaldırır.
+127.0.0.1:6379> hdel sozluk pen
+(integer) 1
+
+-- hgetall sözlükteki tüm dataları getirir.
+127.0.0.1:6379> hgetall sozluk
+1) "bag"
+2) "canta"
