@@ -1,5 +1,7 @@
 <Solution>
   <Project Path="IDistributedCacheRedisApp.Web/IDistributedCacheRedisApp.Web.csproj" Id="5cb00997-5900-43c5-86c7-539cc8338a74" />
   <Project Path="InMemoryApp.Web/InMemoryApp.Web.csproj" />
+  <Project Path="RedisApp.Cache/RedisApp.Cache.csproj" Id="b12e9304-19e1-4c58-8971-9cdcec437cd8" />
+  <Project Path="RedisExample.Api/RedisExample.Api.csproj" Id="f945552a-3ab0-444c-bcb7-5b3a5461326c" />
   <Project Path="RedisExchangeApi.Web/RedisExchangeApi.Web.csproj" Id="dafd7550-3856-4640-a361-0f93bd51c4b3" />
 </Solution>
